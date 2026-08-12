@@ -106,13 +106,15 @@ _STYLE_ROLES = (
 def _style_vars_css(style: TemplateStyle) -> str:
     """Render a TemplateStyle into a `:root { --font-title: ...; }` block that
     styles.css's `var(--font-title)` etc. pick up - lets each text role's
-    font/size/weight be set from Python without touching the stylesheet."""
+    font/size/weight, plus the logo's rendered height, be set from Python
+    without touching the stylesheet."""
     lines = [":root {"]
     for css_key, attr_name in _STYLE_ROLES:
         text_style: TextStyle = getattr(style, attr_name)
         lines.append(f"  --font-{css_key}: {_resolve_font_stack(text_style.font_family)};")
         lines.append(f"  --size-{css_key}: {text_style.size_pt}pt;")
         lines.append(f"  --weight-{css_key}: {700 if text_style.bold else 400};")
+    lines.append(f"  --logo-height: {style.logo_height_in}in;")
     lines.append("}")
     return "\n".join(lines)
 

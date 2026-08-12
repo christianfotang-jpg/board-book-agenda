@@ -152,7 +152,10 @@ stages as the CLI:
 2. Review the extracted items - each item **and each of its sub-items**
    (e.g. individual Consent Agenda motions) gets its own drag-and-drop PDF
    uploader, so a supporting document can be attached to the exact entry it
-   belongs to. An institution logo can be uploaded in the sidebar. An
+   belongs to. An institution logo can be uploaded in the sidebar, with a
+   **logo height** control right next to it (defaults to 0.65in, matching
+   the University of Alberta's own board book letterhead - the logo is
+   scaled to this height regardless of the uploaded image's resolution). An
    optional **Style settings** panel lets you set the font, size, and bold
    weight independently for each part of the cover page (the two header
    lines, item title, presenters, action label, and time column).
@@ -325,13 +328,34 @@ Interactive docs are served at `http://localhost:8000/docs`.
 
 The layout in `agenda.html.j2` / `styles.css` was measured directly from
 real University of Alberta GFC board books: a centered logo/header block,
-a narrower (~5.15in) left-anchored two-column item table with a light-gray
-divider above each top-level item, and indented sub-entries (e.g. individual
-Consent Agenda motions) with no clock time of their own. Edit the CSS to
-adjust proportions or a different committee's letterhead without touching
-any Python. `renderer.py` keeps the PDF page geometry (`_PAGE_FORMAT`,
-`_PAGE_MARGIN`) in sync with the `@page` rule in the stylesheet; update both
-together if you change the page size.
+a narrower (~5.15in) left-anchored two-column item table with a divider
+above each top-level item's *content* column only (it does not extend
+under the time column - matching the source documents pixel-for-pixel), and
+indented sub-entries (e.g. individual Consent Agenda motions) with no clock
+time of their own. Edit the CSS to adjust proportions or a different
+committee's letterhead without touching any Python. `renderer.py` keeps the
+PDF page geometry (`_PAGE_FORMAT`, `_PAGE_MARGIN`) in sync with the `@page`
+rule in the stylesheet; update both together if you change the page size.
+
+**Brand palette:** the green (`#1e5832`) and gold (`#a8781f`) accents in
+`styles.css`'s `:root` block were sampled directly from pixels in a real
+University of Alberta logo asset, not guessed - green tints the time/location
+header line and every item divider, gold tints the time column and action
+labels, and the page background is a subtle warm off-white (`#fffdf8`)
+instead of stark white. These are intentionally not exposed as
+`TemplateStyle` options (unlike fonts/sizes) - edit the `:root` variables in
+`styles.css` directly if you need a different institution's palette.
+
+**Logo sizing:** the logo renders at a *fixed* height (`TemplateStyle.
+logo_height_in`, default `0.65` - matching the University of Alberta's own
+letterhead), not a CSS `max-height`. This matters: a `max-height` only caps
+an image that's already large enough - it won't scale a small/low-DPI source
+image up to fill the space, which is why early versions rendered some
+uploaded logos noticeably smaller than the reference documents. A fixed
+height scales the logo up *or* down to the same visual size regardless of
+the uploaded file's native resolution. Adjustable per-build via the web UI
+(sidebar, next to the logo uploader), `--style path/to/style.json` on the
+CLI, or the API's `style.logo_height_in` field.
 
 **Fonts & sizes:** each text role on the cover page - the two header lines,
 item title, presenters, action label, and time column - has its own

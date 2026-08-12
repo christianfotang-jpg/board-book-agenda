@@ -108,6 +108,13 @@ class TemplateStyle(BaseModel):
     item_presenters: TextStyle = Field(default_factory=lambda: TextStyle(size_pt=11, bold=False))
     item_action: TextStyle = Field(default_factory=lambda: TextStyle(size_pt=10, bold=False))
     time_column: TextStyle = Field(default_factory=lambda: TextStyle(size_pt=10.5, bold=False))
+    logo_height_in: float = Field(
+        default=0.65,
+        gt=0,
+        description="Rendered logo height in inches (width scales to match, preserving aspect ratio). "
+        "0.65in matches the University of Alberta's own board book letterhead. Unlike CSS max-height, "
+        "this is a fixed height - it scales a small source image UP to this size, not just down.",
+    )
 
 
 class BuildRequest(BaseModel):

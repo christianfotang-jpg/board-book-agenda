@@ -2,10 +2,20 @@
    (612x792pt Letter pages): left margin ~33pt, content column x109-402pt,
    sub-item indent +22pt, header text centered on the full page width.
 
-   Per-role typography (font/size/weight) comes from CSS custom properties
-   (--font-*/--size-*/--weight-*) injected by renderer.py's _style_vars_css()
-   ahead of this stylesheet - see TemplateStyle in models.py. Everything
-   else (color, italics, spacing) stays fixed here. */
+   Per-role typography (font/size/weight) and the logo's rendered height
+   come from CSS custom properties (--font-*/--size-*/--weight-*/--logo-
+   height) injected by renderer.py's _style_vars_css() ahead of this
+   stylesheet - see TemplateStyle in models.py. The brand palette below is
+   sampled directly from the University of Alberta's own logo asset (the
+   deep green is an exact pixel sample, not a guess) and is intentionally
+   NOT user-configurable - see the "warm, branded feel" ask this answers. */
+
+:root {
+  --brand-green: #1e5832;
+  --brand-green-soft: #a9c2ae; /* divider lines - a muted tint of the brand green, not flat gray */
+  --brand-gold: #a8781f; /* time column + accent - warm, not a cold gray */
+  --warm-bg: #fffdf8; /* subtle warm paper tone instead of stark white */
+}
 
 @page {
   size: Letter;
@@ -22,6 +32,7 @@ body {
   color: #1a1a1a;
   font-size: 11pt;
   line-height: 1.4;
+  background: var(--warm-bg);
 }
 
 /* ---------- Header (centered on the full page width) ---------- */
@@ -34,8 +45,14 @@ body {
 .header-logo {
   display: block;
   margin: 0 auto 0.3in;
-  max-height: 0.7in;
-  max-width: 3.2in;
+  /* Fixed height (not max-height): a small source image gets scaled UP to
+     match, not just capped when already smaller. 0.65in default matches the
+     University of Alberta's own board book letterhead; adjustable per-build
+     via TemplateStyle.logo_height_in (web UI: sidebar, next to the logo
+     uploader). max-width is a safety cap for unusually wide/narrow logos. */
+  height: var(--logo-height, 0.65in);
+  width: auto;
+  max-width: 4in;
   object-fit: contain;
 }
 
@@ -53,6 +70,7 @@ body {
   font-family: var(--font-header2);
   font-size: var(--size-header2);
   font-weight: var(--weight-header2);
+  color: var(--brand-green);
   margin-top: 0.12in;
 }
 
@@ -76,6 +94,7 @@ body {
   font-family: var(--font-time);
   font-size: var(--size-time);
   font-weight: var(--weight-time);
+  color: var(--brand-gold);
   white-space: nowrap;
 }
 
@@ -84,9 +103,10 @@ body {
   padding: 0.14in 0 0.14in 0;
 }
 
-.top-item .time-col,
+/* Divider sits above the content column only - it does NOT extend under the
+   time column, matching the source documents exactly. */
 .top-item .content-col {
-  border-top: 0.75pt solid #cccccc;
+  border-top: 0.75pt solid var(--brand-green-soft);
 }
 
 .item-title {
@@ -113,7 +133,7 @@ body {
   font-size: var(--size-action);
   font-weight: var(--weight-action);
   font-style: italic;
-  color: #888888;
+  color: #8c6f2e; /* warm gold-brown, not a cold gray - part of the same accent family as --brand-gold */
   margin-top: 1pt;
 }
 

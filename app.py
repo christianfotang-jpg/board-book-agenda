@@ -192,9 +192,20 @@ with st.sidebar:
     st.divider()
     st.subheader("Institution logo (optional)")
     logo_file = st.file_uploader(
-        "Shown top-left of the agenda header",
+        "Shown centered at the top of the agenda header",
         type=["png", "jpg", "jpeg", "svg"],
         key="logo_uploader",
+    )
+    logo_height_in = st.number_input(
+        "Logo height (inches)",
+        min_value=0.2,
+        max_value=2.0,
+        value=0.65,
+        step=0.05,
+        key="logo_height_in",
+        help="0.65in matches the University of Alberta's own board book letterhead. The logo is "
+        "scaled to this height regardless of the uploaded image's resolution, width auto-scales "
+        "to preserve its aspect ratio.",
     )
 
     st.divider()
@@ -353,6 +364,7 @@ else:
             item_presenters=_style_row("presenters", "Presenters", _defaults.item_presenters),
             item_action=_style_row("action", "Action label", _defaults.item_action),
             time_column=_style_row("time", "Time column", _defaults.time_column),
+            logo_height_in=logo_height_in,  # set in the sidebar, next to the logo uploader
         )
 
     st.subheader("3. Generate")
