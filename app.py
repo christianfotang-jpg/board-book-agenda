@@ -17,13 +17,27 @@ Run with:
 
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
+# Streamlit Community Cloud only ever runs `pip install -r requirements.txt`
+# - it never runs `pip install -e .`. Locally, that editable install is what
+# puts the local `boardbook` package (src-layout: it lives under src/, not
+# the repo root - see pyproject.toml's `[tool.setuptools.packages.find]
+# where = ["src"]`) on the import path. Without it, `import boardbook` fails
+# with ModuleNotFoundError on a fresh Streamlit Cloud container. Add src/ to
+# sys.path explicitly, before importing anything from boardbook, so both
+# environments resolve the same package.
+_SRC_DIR = Path(__file__).resolve().parent / "src"
+if str(_SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(_SRC_DIR))
+
 import base64
 import os
 import shutil
 import subprocess
 import tempfile
 from datetime import date
-from pathlib import Path
 from typing import Optional
 
 import anthropic
