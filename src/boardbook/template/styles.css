@@ -5,17 +5,11 @@
    Per-role typography (font/size/weight) and the logo's rendered height
    come from CSS custom properties (--font-*/--size-*/--weight-*/--logo-
    height) injected by renderer.py's _style_vars_css() ahead of this
-   stylesheet - see TemplateStyle in models.py. The brand palette below is
-   sampled directly from the University of Alberta's own logo asset (the
-   deep green is an exact pixel sample, not a guess) and is intentionally
-   NOT user-configurable - see the "warm, branded feel" ask this answers. */
-
-:root {
-  --brand-green: #1e5832;
-  --brand-green-soft: #a9c2ae; /* divider lines - a muted tint of the brand green, not flat gray */
-  --brand-gold: #a8781f; /* time column + accent - warm, not a cold gray */
-  --warm-bg: #fffdf8; /* subtle warm paper tone instead of stark white */
-}
+   stylesheet - see TemplateStyle in models.py. Everything else (color,
+   italics, spacing) stays fixed here, matching the source documents
+   exactly - plain black/gray/white, no institutional color accents. (Any
+   green/gold branding belongs on the web app's own UI, not the generated
+   agenda - see app.py.) */
 
 @page {
   size: Letter;
@@ -32,7 +26,6 @@ body {
   color: #1a1a1a;
   font-size: 11pt;
   line-height: 1.4;
-  background: var(--warm-bg);
 }
 
 /* ---------- Header (centered on the full page width) ---------- */
@@ -70,7 +63,6 @@ body {
   font-family: var(--font-header2);
   font-size: var(--size-header2);
   font-weight: var(--weight-header2);
-  color: var(--brand-green);
   margin-top: 0.12in;
 }
 
@@ -94,7 +86,6 @@ body {
   font-family: var(--font-time);
   font-size: var(--size-time);
   font-weight: var(--weight-time);
-  color: var(--brand-gold);
   white-space: nowrap;
 }
 
@@ -103,10 +94,10 @@ body {
   padding: 0.14in 0 0.14in 0;
 }
 
-/* Divider sits above the content column only - it does NOT extend under the
-   time column, matching the source documents exactly. */
+/* Divider sits above the content column only - a thin line that does NOT
+   extend under the time column, matching the source documents exactly. */
 .top-item .content-col {
-  border-top: 0.75pt solid var(--brand-green-soft);
+  border-top: 0.75pt solid #cccccc;
 }
 
 .item-title {
@@ -129,11 +120,11 @@ body {
 }
 
 .item-action {
+  font-style: italic;
   font-family: var(--font-action);
   font-size: var(--size-action);
   font-weight: var(--weight-action);
-  font-style: italic;
-  color: #8c6f2e; /* warm gold-brown, not a cold gray - part of the same accent family as --brand-gold */
+  color: #888888;
   margin-top: 1pt;
 }
 

@@ -1,0 +1,13 @@
+# Web app theme only - has no effect on the generated agenda PDF, which
+# stays plain black/white/gray to match the University of Alberta's own
+# board books exactly (see src/boardbook/template/styles.css).
+#
+# Colors sampled directly from a real UAlberta logo asset / their
+# green-and-gold institutional identity.
+[theme]
+base = "light"
+primaryColor = "#1E5832"            # UAlberta green - buttons, active widgets, focus rings
+backgroundColor = "#FFFDF8"         # warm off-white main content area
+secondaryBackgroundColor = "#F6EFDC" # warm cream sidebar / widget chrome (the "gold" half of the pairing)
+textColor = "#26261F"               # warm near-black, not stark black
+font = "sans serif"

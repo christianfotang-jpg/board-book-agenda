@@ -36,6 +36,7 @@ import base64
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 from datetime import date
 from typing import Optional
@@ -59,8 +60,15 @@ def _ensure_chromium_installed() -> None:
     no-op there. `st.cache_resource` makes it a true one-time cost per
     running container (not per user session) - unlike a user-entered API
     key, this touches no per-user state, so caching it process-wide is safe.
+
+    Invoked as `sys.executable -m playwright` rather than the bare
+    `playwright` command: the bare command depends on the venv's bin/
+    directory being on PATH, which isn't guaranteed for every way this app
+    gets launched (e.g. a direct absolute-path invocation that never sourced
+    activate) - `-m` only needs the package installed in the interpreter
+    that's already running this code, which is always true here.
     """
-    subprocess.run(["playwright", "install", "chromium"], check=True)
+    subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
 
 
 _ensure_chromium_installed()
@@ -218,6 +226,14 @@ with st.sidebar:
 # ---------------------------------------------------------------------------
 
 st.title("📋 Board Book Generator")
+# A small green-to-gold accent, echoing the University of Alberta's own
+# identity colors on the app chrome itself - the generated PDF stays plain
+# black/white/gray to match their board books exactly (see styles.css).
+st.markdown(
+    '<div style="height: 4px; width: 100%; margin: -0.6rem 0 1rem 0; border-radius: 2px; '
+    'background: linear-gradient(to right, #1E5832 0%, #1E5832 70%, #C9A227 70%, #C9A227 100%);"></div>',
+    unsafe_allow_html=True,
+)
 st.caption(
     "Pick the committee, paste a freeform meeting agenda, parse it into structured items, attach "
     "supporting PDFs per item, then generate the finished board book."

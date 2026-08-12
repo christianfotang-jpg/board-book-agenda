@@ -162,6 +162,12 @@ stages as the CLI:
 3. Click **Generate & Download Board Book PDF** to render, merge, and stamp
    the final document. It's previewed inline and downloadable immediately.
 
+The app itself (not the generated PDF) uses a warm, green-and-gold theme
+echoing the University of Alberta's identity - set in `.streamlit/
+config.toml`. Change or remove it there if you're deploying this for a
+different institution; it has no effect on the generated agenda, which
+always renders plain black/white/gray to match an official board book.
+
 If `ANTHROPIC_API_KEY` isn't set in your environment, the sidebar has a
 password-masked field to paste one in for the session instead.
 
@@ -337,14 +343,15 @@ committee's letterhead without touching any Python. `renderer.py` keeps the
 PDF page geometry (`_PAGE_FORMAT`, `_PAGE_MARGIN`) in sync with the `@page`
 rule in the stylesheet; update both together if you change the page size.
 
-**Brand palette:** the green (`#1e5832`) and gold (`#a8781f`) accents in
-`styles.css`'s `:root` block were sampled directly from pixels in a real
-University of Alberta logo asset, not guessed - green tints the time/location
-header line and every item divider, gold tints the time column and action
-labels, and the page background is a subtle warm off-white (`#fffdf8`)
-instead of stark white. These are intentionally not exposed as
-`TemplateStyle` options (unlike fonts/sizes) - edit the `:root` variables in
-`styles.css` directly if you need a different institution's palette.
+**Colors stay plain, on purpose:** the generated PDF is deliberately
+black/white/gray with no institutional color accents, matching the
+University of Alberta's own board books exactly. Green-and-gold branding
+lives on the *web app's* chrome instead (`.streamlit/config.toml`'s
+`[theme]` block, plus a small accent bar in `app.py`) - not on the document
+itself. If you want a colored accent in the generated PDF, add it to
+`styles.css` directly; there's no `TemplateStyle` option for it, by design,
+since the document is meant to look like an official board book, not a
+themed web page.
 
 **Logo sizing:** the logo renders at a *fixed* height (`TemplateStyle.
 logo_height_in`, default `0.65` - matching the University of Alberta's own
