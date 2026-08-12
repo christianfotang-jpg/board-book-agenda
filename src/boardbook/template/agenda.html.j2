@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{{ agenda.meta.committee_name }} Agenda</title>
+  <style>
+    {{ font_faces_css | safe }}
+    {{ style_vars_css | safe }}
+    {% include "styles.css" %}
+  </style>
+</head>
+<body>
+  <header class="header">
+    {% if logo_data_uri %}
+      <img class="header-logo" src="{{ logo_data_uri }}" alt="Institution logo" />
+    {% else %}
+      <div class="header-logo-placeholder"></div>
+    {% endif %}
+    <div class="header-line-1">
+      {{ agenda.meta.committee_name }}<span class="header-divider">|</span>{{ formatted_date }}
+    </div>
+    <div class="header-line-2">
+      {{ agenda.time_range }}<span class="header-divider">|</span>{{ agenda.meta.location }}
+    </div>
+  </header>
+
+  <table class="agenda-table">
+    <tbody>
+      {% for item in agenda.items %}
+      <tr class="top-item">
+        <td class="time-col">{{ item.calculated_time }}</td>
+        <td class="content-col">
+          <div class="item-title">{{ item.title }}</div>
+          {% if item.presenters %}
+          <div class="item-presenters">{{ item.presenters | join(", ") }}</div>
+          {% endif %}
+          {% if item.action_type %}
+          <div class="item-action">{{ item.action_type }}</div>
+          {% endif %}
+          {% for sub in item.sub_items %}
+          <div class="sub-item">
+            <div class="item-title{{ '' if sub.action_type else ' regular-weight' }}">{{ sub.title }}</div>
+            {% if sub.presenters %}
+            <div class="item-presenters">{{ sub.presenters | join(", ") }}</div>
+            {% endif %}
+            {% if sub.action_type %}
+            <div class="item-action">{{ sub.action_type }}</div>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

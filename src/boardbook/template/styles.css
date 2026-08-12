@@ -1,0 +1,123 @@
+/* Measurements below are taken directly from real GFC board book PDFs
+   (612x792pt Letter pages): left margin ~33pt, content column x109-402pt,
+   sub-item indent +22pt, header text centered on the full page width.
+
+   Per-role typography (font/size/weight) comes from CSS custom properties
+   (--font-*/--size-*/--weight-*) injected by renderer.py's _style_vars_css()
+   ahead of this stylesheet - see TemplateStyle in models.py. Everything
+   else (color, italics, spacing) stays fixed here. */
+
+@page {
+  size: Letter;
+  margin: 0.75in 0.46in 0.9in 0.46in; /* extra bottom margin reserved for the page-number stamp */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Roboto", Arial, sans-serif;
+  color: #1a1a1a;
+  font-size: 11pt;
+  line-height: 1.4;
+}
+
+/* ---------- Header (centered on the full page width) ---------- */
+
+.header {
+  text-align: center;
+  margin-bottom: 0.3in;
+}
+
+.header-logo {
+  display: block;
+  margin: 0 auto 0.3in;
+  max-height: 0.7in;
+  max-width: 3.2in;
+  object-fit: contain;
+}
+
+.header-logo-placeholder {
+  height: 0.3in;
+}
+
+.header-line-1 {
+  font-family: var(--font-header1);
+  font-size: var(--size-header1);
+  font-weight: var(--weight-header1);
+}
+
+.header-line-2 {
+  font-family: var(--font-header2);
+  font-size: var(--size-header2);
+  font-weight: var(--weight-header2);
+  margin-top: 0.12in;
+}
+
+.header-divider {
+  margin: 0 0.12in;
+}
+
+/* ---------- Agenda table ----------
+   Fixed, narrower width anchored to the left margin - NOT stretched across
+   the full page - matching the source documents' layout exactly. */
+
+.agenda-table {
+  width: 5.15in;
+  border-collapse: collapse;
+}
+
+.time-col {
+  width: 1.06in;
+  vertical-align: top;
+  padding: 0.14in 0.1in 0.14in 0;
+  font-family: var(--font-time);
+  font-size: var(--size-time);
+  font-weight: var(--weight-time);
+  white-space: nowrap;
+}
+
+.content-col {
+  vertical-align: top;
+  padding: 0.14in 0 0.14in 0;
+}
+
+.top-item .time-col,
+.top-item .content-col {
+  border-top: 0.75pt solid #cccccc;
+}
+
+.item-title {
+  font-family: var(--font-title);
+  font-size: var(--size-title);
+  font-weight: var(--weight-title);
+}
+
+/* Sub-items with no action label of their own render regular-weight
+   regardless of the configured title weight - see agenda.html.j2. */
+.item-title.regular-weight {
+  font-weight: 400;
+}
+
+.item-presenters {
+  font-family: var(--font-presenters);
+  font-size: var(--size-presenters);
+  font-weight: var(--weight-presenters);
+  margin-top: 1pt;
+}
+
+.item-action {
+  font-family: var(--font-action);
+  font-size: var(--size-action);
+  font-weight: var(--weight-action);
+  font-style: italic;
+  color: #888888;
+  margin-top: 1pt;
+}
+
+.sub-item {
+  margin-top: 0.16in;
+  padding-left: 0.3in;
+}

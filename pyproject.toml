@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "boardbook-generator"
+version = "0.1.0"
+description = "Automated Board Book Generator: parses freeform agenda text, renders a GFC-style agenda cover page, and compiles/stamps the final board book PDF."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "anthropic>=0.40.0",
+    "pydantic>=2.6",
+    "jinja2>=3.1",
+    "playwright>=1.44",
+    "pypdf>=4.2",
+    "reportlab>=4.1",
+    "click>=8.1",
+    "fastapi>=0.111",
+    "uvicorn[standard]>=0.29",
+    "python-multipart>=0.0.9",
+    "python-dotenv>=1.0",
+    "streamlit>=1.38",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "httpx>=0.27",
+]
+
+[project.scripts]
+boardbook = "boardbook.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+boardbook = ["template/*.html.j2", "template/*.css", "template/fonts/*.ttf"]
