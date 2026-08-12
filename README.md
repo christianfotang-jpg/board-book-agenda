@@ -199,11 +199,17 @@ local setup - they just open a link.
    dependencies + apt packages); the first page load additionally waits
    ~30s for `_ensure_chromium_installed()`'s one-time browser download.
 
-**If the build fails on a `packages.txt` line:** Debian occasionally renames
-a package between releases (e.g. `libasound2` -> `libasound2t64`) faster than
-this list can be verified against Streamlit Cloud's current base image -
-the build log names the exact missing package; delete or rename that one
-line and redeploy. Everything else here doesn't need to change.
+**If the build fails during "Solving dependencies" (`Error installing requirements`):**
+Streamlit Cloud's apt environment mixes an older security repo with a newer
+Debian release, so a package can resolve to two incompatible versions at
+once - hit once already with `libglib2.0-0` (pinned old by the security
+repo) conflicting with `libpango-1.0-0`'s requirement for the newer
+`libglib2.0-0t64` (Debian's "t64" rename wave). Fix pattern: the log names
+the exact conflicting package and what it `Breaks`/`Depends` on - either
+delete that line (if something else in the list already pulls in the
+correct version transitively, as was true for glib) or rename it to its
+`t64` variant (as was needed for `libasound2` -> `libasound2t64`), then
+redeploy. `apt-get`-name-not-found errors follow the same rename pattern.
 
 **Multi-user safety:** a key pasted into the sidebar by an individual
 visitor is used for that request only and is never written to a shared
